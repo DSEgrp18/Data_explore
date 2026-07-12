@@ -9,7 +9,7 @@ date: "12 July 2026"
 **Module:** Data Science & Engineering Project
 **Group:** 18
 **Mentor:** Dr. Buddhika (buddhika@cse.mrt.ac.lk)
-**Members:** Kusal Pabasara, _Member 2_, _Member 3_ *(fill in names/index numbers)*
+**Members:** _Member 1_, _Member 2_, _Member 3_ *(fill in names/index numbers)*
 
 ---
 
@@ -67,16 +67,20 @@ For automatic evaluation we will use **seniruk/whisper-small-si** (fine-tuned Si
 4. **Evaluation:** MOS study with ≥15 native speakers (naturalness + intelligibility), Whisper-WER on FLEURS sentences, side-by-side preference tests vs. the three baselines; error analysis on numbers/loanwords/rare syllables.
 5. **Application:** FastAPI backend serving the model + simple web UI (text box → audio player), Singlish input via Dakshina transliteration as stretch goal; deploy demo on Hugging Face Spaces.
 
-## 7. Work Division (3 members)
+## 7. Work Division (3 members — equal participation in the data science core)
 
-| Member | Role | Responsibilities |
-|---|---|---|
-| **Member A — Data & Evaluation Lead** (Kusal) | Data engineering + evaluation | Dataset acquisition/preprocessing pipeline; corpus statistics & data report; MOS study design and execution; Whisper-WER evaluation harness; data/licensing documentation |
-| **Member B — Modeling Lead** | ML training | VITS fine-tuning/training; F5-TTS fine-tuning; baseline reproduction (dialoglk, pnfo checkpoints); training infrastructure (GPU environment, experiment tracking); model selection |
-| **Member C — Frontend & Application Lead** | TTS frontend + product | Sinhala text normalization module (adapting `sinhala.grm`); Singlish transliteration input; web application (API + UI); demo deployment; latency/robustness testing |
-| **All** | Shared | Weekly mentor meetings; literature review; paper writing (each member writes their own sections); final report & presentation |
+Since this is a *data science* project, the division is by **phase, not by role**: every member works on data engineering, modeling, and evaluation. Within each phase, tasks are split into parallel slices of similar weight so each member owns a complete data-science workflow end to end. Software-engineering tasks (app, deployment) are secondary duties spread across all three.
 
-Ownership is by *deliverable*, but members are expected to pair on blockers (e.g., B+C on integrating the frontend with the model, A+B on data ablation experiments).
+| Phase (all members participate) | Member 1 | Member 2 | Member 3 |
+|---|---|---|---|
+| **Data collection & preprocessing** | pnfo corpus: cleaning, resampling, splits, corpus statistics | SLR30 + SafnasKaldeen: transcript matching, multi-speaker preprocessing | SLR52: large-scale filtering; FLEURS eval set; text-normalization data (`sinhala.grm`, Dakshina) |
+| **Exploratory data analysis** | Audio quality & duration distributions | Speaker/gender coverage, phonetic coverage analysis | Text statistics: rare syllables, loanwords, numbers frequency |
+| **Modeling** | VITS fine-tuning on pnfo male voice | F5-TTS fine-tuning + comparison | Multi-speaker VITS experiments + reproducing the 3 published baselines |
+| **Evaluation** | Whisper-WER automatic evaluation harness | MOS study design, rater recruitment, execution | Error analysis (numbers, loanwords, rare syllables) + statistical significance testing |
+| **Application (secondary)** | Inference API backend | Model serving & frontend-model integration | Web UI + demo deployment |
+| **Paper & report** | Data & experimental-setup sections | Modeling & results sections | Evaluation, error-analysis & related-work sections |
+
+Members pair on blockers across slices, and slice assignments can be swapped by agreement — the constraint is that **each member ends the project having done data work, model training, and evaluation**, which is also what each of us should be able to defend at the viva.
 
 ## 8. Timeline (14 weeks)
 
