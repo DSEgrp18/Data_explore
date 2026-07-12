@@ -13,7 +13,7 @@ This repo tracks every data source we find, with license and suitability notes, 
 
 | Dataset | Link | Measured details | License | Verdict for TTS |
 |---|---|---|---|---|
-| ✅ **PathNirvana (pnfo)** | [github.com/pnfo/sinhala-tts-dataset](https://github.com/pnfo/sinhala-tts-dataset/releases) | **13.8 h**, 2 speakers (male ~11.8 h / 5,200 clips, female ~2 h / 1,000 clips), 22,050 Hz 16-bit, silence-trimmed, LJSpeech-format metadata; sentences chosen to cover rare Sanskrit/Pali-origin syllables. v2.1 archive = 1.68 GB | GPL-3.0 + restriction: **non-obscene, non-offensive speech generation only** | **Best single-speaker training set available.** Bonus: the releases also ship a **pretrained VITS checkpoint** (`checkpoint_80000.pth`, 997 MB + config) — a ready baseline trained on this data. |
+| ✅ **PathNirvana (pnfo)** | [github.com/pnfo/sinhala-tts-dataset](https://github.com/pnfo/sinhala-tts-dataset/releases) | **Measured (v2.1): 6,386 clips, 13.61 h, all 22,050 Hz, avg clip 7.7 s.** Male voice (mettananda): 5,401 clips / 11.58 h; female (oshadi): 985 clips / 2.03 h. `metadata.csv` has **both romanized and Sinhala-script transcripts** (`id\|roman\|sinhala\|speaker`) — ready for grapheme or romanized training. Card claims (13.8 h) check out. | GPL-3.0 + restriction: **non-obscene, non-offensive speech generation only** | **Best single-speaker training set available.** Bonus: the releases also ship a **pretrained VITS checkpoint** (`checkpoint_80000.pth`, 997 MB + config) — a ready baseline trained on this data. |
 | ✅ **OpenSLR SLR30** | [openslr.org/30](https://www.openslr.org/30/) (openslr.trmal.net is a mirror) | **Measured: 2,064 wavs, 12 speakers, 3.38 h total, 48 kHz, avg clip 5.9 s — but only 1,251 clips (~2 h) have transcripts** in `si_lk.lines.txt`. Collected by Google in Sri Lanka 2015–16 | CC BY-SA 4.0 | Multi-speaker complement to pnfo, but much smaller than card descriptions suggest. Use only the 1,251 transcribed clips for TTS. Corpus behind Google's SLTU 2018 Sinhala TTS paper. |
 | ✅ **OpenSLR SLR52** | [openslr.org/52](https://www.openslr.org/52/) | **~185,000 transcribed utterances**, crowdsourced, 16 kHz, many speakers; manually quality checked | CC BY-SA 4.0 | The big one. ASR-quality, not TTS-clean — use for pre-training, vocoder training, or fine-tuning Whisper for our evaluation loop. |
 | ✅ **SafnasKaldeen** | [Kaggle](https://www.kaggle.com/datasets/safnask/sinhalatts-dataset-publication-by-voicemakers) | 4 native speakers, phonetically balanced sentences. UoM CSE final-year project (Dec 2025). ⚠️ **The [HF page](https://huggingface.co/datasets/SafnasKaldeen/Sinhala-Text-speech-Dataset-TTS) is a card only — 0 bytes of data; download from Kaggle.** | Apache-2.0 (per HF card) | Multi-speaker fine-tuning / speaker variety. Nice contact point: same department as us. |
@@ -65,8 +65,7 @@ This repo tracks every data source we find, with license and suitability notes, 
 - [x] Verify Sinhala in CMU Wilderness / OpenBibleTTS → ❌ absent from both
 - [x] Check SafnasKaldeen + sinscribe license/size → Apache-2.0 card-only / re-packaged remix
 - [x] Common Voice Sinhala hours → 0.4 h unvalidated, unusable
-- [x] Download SLR30 + pnfo, measure real stats → SLR30 done (see §1); pnfo archive downloaded, stats pending
-- [ ] pnfo measured stats (extraction in progress)
+- [x] Download SLR30 + pnfo, measure real stats → both done, see §1 (measured with `scripts/audio_stats.py`)
 - [ ] Baseline samples from dialoglk VITS (checkpoint download in progress)
 - [ ] Try pnfo's own VITS checkpoint as second baseline
 - [ ] Download SafnasKaldeen from Kaggle, measure stats (needs Kaggle login)
