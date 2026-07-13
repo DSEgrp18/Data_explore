@@ -33,7 +33,7 @@ This repo tracks every data source we find, with license and suitability notes, 
 
 | Model | Link | Notes |
 |---|---|---|
-| ✅ **Dialog/UoM SinhalaVITS** | [dialoglk/SinhalaVITS-TTS-F1](https://huggingface.co/dialoglk/SinhalaVITS-TTS-F1) (female) · [dialoglk/SinhalaVITS-TTS-M2](https://huggingface.co/dialoglk/SinhalaVITS-TTS-M2) (male) | **Coqui-TTS VITS checkpoints, MPL-2.0**, tagged UoM + Dialog. Pipeline: Sinhala text → bundled `romanizer.py` → VITS. Checkpoints ~1 GB each (full training state). Our strongest published baseline. |
+| ✅ **Dialog/UoM SinhalaVITS** | [dialoglk/SinhalaVITS-TTS-F1](https://huggingface.co/dialoglk/SinhalaVITS-TTS-F1) (female) · [dialoglk/SinhalaVITS-TTS-M2](https://huggingface.co/dialoglk/SinhalaVITS-TTS-M2) (male) | **Coqui-TTS VITS checkpoints, MPL-2.0**, tagged UoM + Dialog. Pipeline: Sinhala text → bundled `romanizer.py` → VITS. Checkpoints ~1 GB each (full training state). Our strongest published baseline. **We ran F1 locally** (samples in `baseline_samples/`): speech quality is decent, but the model **silently discards digits** — no text normalization at all. That's a demonstrable gap our frontend fixes. |
 | ✅ **pnfo VITS checkpoint** | [v2.0-model release](https://github.com/pnfo/sinhala-tts-dataset/releases) | `checkpoint_80000.pth` + `config.json` — trained on the pnfo dataset. Second baseline for free. |
 | ✅ **F5-TTS Sinhala** | [tharindumihi/tts-si-F5-TTS](https://huggingface.co/tharindumihi/tts-si-F5-TTS) | Flow-matching model + voice cloning, CC-BY-NC-4.0, ships sample outputs. Modern-architecture reference point. |
 | ✅ **Whisper for eval** | [seniruk/whisper-small-si](https://huggingface.co/seniruk/whisper-small-si) (Apache-2.0) | Fine-tuned Sinhala ASR → automatic intelligibility metric (WER on our synthesized speech). |
@@ -66,6 +66,7 @@ This repo tracks every data source we find, with license and suitability notes, 
 - [x] Check SafnasKaldeen + sinscribe license/size → Apache-2.0 card-only / re-packaged remix
 - [x] Common Voice Sinhala hours → 0.4 h unvalidated, unusable
 - [x] Download SLR30 + pnfo, measure real stats → both done, see §1 (measured with `scripts/audio_stats.py`)
-- [ ] Baseline samples from dialoglk VITS (checkpoint download in progress)
+- [x] Baseline samples from dialoglk VITS → done, see `baseline_samples/` (key finding: baseline drops digits — no normalization)
 - [ ] Try pnfo's own VITS checkpoint as second baseline
 - [ ] Download SafnasKaldeen from Kaggle, measure stats (needs Kaggle login)
+- [ ] Listen to the baseline samples (all members) and note quality issues for the proposal defence
