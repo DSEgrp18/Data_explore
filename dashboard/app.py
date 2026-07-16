@@ -17,6 +17,7 @@ from flask import Flask, jsonify, request, send_file
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MODEL_DIR = ROOT.parent / "tts_demo" / "model"
+DEFAULT_MALE_MODEL_DIR = ROOT.parent / "tts_demo" / "model_male"
 MAX_TEXT_LENGTH = 5_000
 
 UNITS = ["බිංදුව", "එක", "දෙක", "තුන", "හතර", "පහ", "හය", "හත", "අට", "නවය"]
@@ -84,7 +85,7 @@ def split_text(text: str, max_chars: int = 180) -> list[str]:
 
 
 class TTSEngine:
-    def __init__(self, model_dir: Path):
+    def __init__(self, model_dir: Path, checkpoint_name: str, config_name: str):
         from TTS.utils.synthesizer import Synthesizer
 
         sys.path.insert(0, str(model_dir))
@@ -94,8 +95,8 @@ class TTSEngine:
         self.sample_rate = 22_050
         started = time.perf_counter()
         self.synth = Synthesizer(
-            tts_checkpoint=str(model_dir / "Nipunika_210000.pth"),
-            tts_config_path=str(model_dir / "Nipunika_config.json"),
+            tts_checkpoint=str(model_dir / checkpoint_name),
+            tts_config_path=str(model_dir / config_name),
             use_cuda=False,
         )
         self.load_seconds = time.perf_counter() - started
@@ -128,29 +129,40 @@ label{color:var(--muted)}audio{width:100%;margin-top:1.2rem}.meta{white-space:pr
 </style></head><body><main><section class="card">
 <h1>සිංහල හඬ</h1><p class="sub">Group 18 · Local Sinhala TTS baseline dashboard</p>
 <textarea id="text" maxlength="5000" placeholder="සිංහල පෙළ මෙහි ඇතුළත් කරන්න...">ශ්‍රී ලංකාවේ ප්‍රධාන ජාතිය වන සිංහල ජනයාගේ මව් බස සිංහල වෙයි.</textarea>
-<div class="row"><button id="speak">හඬ අසන්න</button><label><input id="normalize" type="checkbox" checked> ඉලක්කම් වචන බවට පරිවර්තනය කරන්න</label></div>
+<div class="row"><button id="speak">හඬ අසන්න</button><label>හඬ: <select id="voice"><option value="male">පිරිමි — Roshan</option><option value="female">කාන්තා — Nipunika</option></select></label><label><input id="normalize" type="checkbox" checked> ඉලක්කම් වචන බවට පරිවර්තනය කරන්න</label></div>
 <audio id="audio" controls hidden></audio><div id="meta" class="meta"></div>
 </section></main><script>
 const button=document.getElementById('speak'), meta=document.getElementById('meta'), audio=document.getElementById('audio');
 button.onclick=async()=>{const text=document.getElementById('text').value.trim();if(!text)return;
  button.disabled=true;button.textContent='සකසමින්…';meta.style.display='block';meta.className='meta';meta.textContent='හඬ සකසමින් පවතී…';
- try{const response=await fetch('/api/tts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text,normalize_numbers:document.getElementById('normalize').checked})});
+ try{const response=await fetch('/api/tts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text,voice:document.getElementById('voice').value,normalize_numbers:document.getElementById('normalize').checked})});
  if(!response.ok)throw new Error(await response.text());const encoded=response.headers.get('X-TTS-Meta-B64');const details=JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(encoded),c=>c.charCodeAt(0))));const blob=await response.blob();
  audio.src=URL.createObjectURL(blob);audio.hidden=false;audio.play();meta.textContent=`සැකසූ පෙළ: ${details.normalized_text}\nකොටස්: ${details.chunk_count}\nහඬ දිග: ${details.audio_seconds}s · සැකසුම් කාලය: ${details.synthesis_seconds}s · RTF: ${details.rtf}`;
  }catch(error){meta.className='meta error';meta.textContent='දෝෂයක්: '+error.message}finally{button.disabled=false;button.textContent='හඬ අසන්න'}};
 </script></body></html>"""
 
 
-def create_app(model_dir: Path | None = None) -> Flask:
+def create_app(model_dir: Path | None = None, male_model_dir: Path | None = None) -> Flask:
     app = Flask(__name__)
-    model_path = model_dir or Path(os.environ.get("SINHALA_TTS_MODEL_DIR", DEFAULT_MODEL_DIR))
-    engine: TTSEngine | None = None
+    voice_configs = {
+        "female": {
+            "model_dir": model_dir or Path(os.environ.get("SINHALA_TTS_FEMALE_MODEL_DIR", DEFAULT_MODEL_DIR)),
+            "checkpoint": "Nipunika_210000.pth", "config": "Nipunika_config.json",
+        },
+        "male": {
+            "model_dir": male_model_dir or Path(os.environ.get("SINHALA_TTS_MALE_MODEL_DIR", DEFAULT_MALE_MODEL_DIR)),
+            "checkpoint": "Roshan_270000.pth", "config": "Roshan_config.json",
+        },
+    }
+    engines: dict[str, TTSEngine] = {}
 
-    def get_engine() -> TTSEngine:
-        nonlocal engine
-        if engine is None:
-            engine = TTSEngine(model_path)
-        return engine
+    def get_engine(voice: str) -> TTSEngine:
+        if voice not in voice_configs:
+            raise ValueError(f"unknown voice: {voice}")
+        if voice not in engines:
+            selected = voice_configs[voice]
+            engines[voice] = TTSEngine(selected["model_dir"], selected["checkpoint"], selected["config"])
+        return engines[voice]
 
     @app.get("/")
     def index():
@@ -158,7 +170,10 @@ def create_app(model_dir: Path | None = None) -> Flask:
 
     @app.get("/api/health")
     def health():
-        return jsonify({"status": "ok", "model_loaded": engine is not None, "model_dir": str(model_path)})
+        return jsonify({
+            "status": "ok", "loaded_voices": sorted(engines),
+            "voices": {name: str(config["model_dir"]) for name, config in voice_configs.items()},
+        })
 
     @app.post("/api/tts")
     def tts():
@@ -168,11 +183,14 @@ def create_app(model_dir: Path | None = None) -> Flask:
             return jsonify({"error": "text is required"}), 400
         if len(raw_text) > MAX_TEXT_LENGTH:
             return jsonify({"error": f"text exceeds {MAX_TEXT_LENGTH} characters"}), 400
+        voice = str(payload.get("voice", "male"))
+        if voice not in voice_configs:
+            return jsonify({"error": f"unknown voice: {voice}"}), 400
         normalized = clean_input(raw_text, bool(payload.get("normalize_numbers", True)))
         chunks = split_text(normalized)
         if not chunks:
             return jsonify({"error": "text is empty after cleaning"}), 400
-        active_engine = get_engine()
+        active_engine = get_engine(voice)
         waveform, romanized, synthesis_seconds = active_engine.synthesize(chunks)
         audio_seconds = len(waveform) / active_engine.sample_rate
         buffer = io.BytesIO()
@@ -180,6 +198,7 @@ def create_app(model_dir: Path | None = None) -> Flask:
         buffer.seek(0)
         response = send_file(buffer, mimetype="audio/wav", download_name="sinhala-tts.wav")
         metadata = json.dumps({
+            "voice": voice,
             "normalized_text": normalized,
             "chunk_count": len(chunks),
             "romanized_chunks": romanized,

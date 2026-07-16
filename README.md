@@ -62,6 +62,7 @@ This repo tracks every data source we find, with license and suitability notes, 
 - `docs/F5_TTS_Sinhala_Methodology.md` — preregistered adaptation of the F5-TTS paper for a feasible Sinhala ablation
 - `docs/Proposed_SiFi_TTS_Architecture.md` — literature-grounded, resource-aware architecture proposed after reviewing Sinhala and general TTS methods
 - `docs/Baseline_Test_2026-07-17.md` — reproducible 10-item VITS baseline run, latency measurements, and confirmed digit failure
+- `docs/Conversational_Data_Strategy.md` — licensed/consented conversational speech collection and filtering plan
 - `experiments/f5_sinhala_ablation.json` — fixed Sway Sampling/NFE/text-normalization conditions and seeds
 - `scripts/prepare_f5_runs.py` — validates an evaluation manifest and creates the deterministic run sheet
 - `scripts/score_transcripts.py` — dependency-free Sinhala CER/WER scoring after ASR transcription
