@@ -61,9 +61,12 @@ This repo tracks every data source we find, with license and suitability notes, 
 - `baseline_samples/` — baseline TTS outputs for comparison (see §3)
 - `docs/F5_TTS_Sinhala_Methodology.md` — preregistered adaptation of the F5-TTS paper for a feasible Sinhala ablation
 - `docs/Proposed_SiFi_TTS_Architecture.md` — literature-grounded, resource-aware architecture proposed after reviewing Sinhala and general TTS methods
+- `docs/Baseline_Test_2026-07-17.md` — reproducible 10-item VITS baseline run, latency measurements, and confirmed digit failure
 - `experiments/f5_sinhala_ablation.json` — fixed Sway Sampling/NFE/text-normalization conditions and seeds
 - `scripts/prepare_f5_runs.py` — validates an evaluation manifest and creates the deterministic run sheet
 - `scripts/score_transcripts.py` — dependency-free Sinhala CER/WER scoring after ASR transcription
+- `scripts/sifi_frontend.py` — Unicode grapheme-cluster and Sinhala phonological-feature extraction for SiFi-TTS
+- `scripts/run_vits_baseline.py` — reproducible Dialog/UoM VITS challenge-set runner with latency and RTF measurements
 
 ## 7. Remaining to-do
 

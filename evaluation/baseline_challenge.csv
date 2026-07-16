@@ -1,0 +1,11 @@
+id,category,text
+plain_01,plain,ශ්‍රී ලංකාව ඉන්දියානු සාගරයේ පිහිටි දූපතකි.
+plain_02,plain,අද කාලගුණය ඉතා හොඳයි.
+aspiration_01,phonology,භාෂාව හා ධර්මය ගැන පැහැදිලිව කතා කරන්න.
+prenasal_01,phonology,ඟ ඬ ඳ ඹ යන අකුරු නිවැරදිව උච්චාරණය කරන්න.
+conjunct_01,rare_conjunct,ශ්‍රමය ප්‍රගතියේ මූලික පදනමකි.
+number_raw,numeral_raw,මට රුපියල් 250ක් ගෙවන්න තියෙනවා.
+number_spoken,numeral_normalized,මට රුපියල් දෙසිය පනහක් ගෙවන්න තියෙනවා.
+date_raw,date_raw,රැස්වීම 2026 ජූලි 16 දින පැවැත්වේ.
+date_spoken,date_normalized,රැස්වීම දෙදහස් විසිහය ජූලි දහසය දින පැවැත්වේ.
+code_switch_01,code_switch,අද machine learning පන්තිය ආරම්භ වේ.
