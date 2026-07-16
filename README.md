@@ -59,6 +59,10 @@ This repo tracks every data source we find, with license and suitability notes, 
 - `scripts/audio_stats.py` — corpus statistics tool (files, hours, sample rates); run as `python3 audio_stats.py <dir>`
 - `scripts/vits_baseline.py` — generates baseline samples from dialoglk SinhalaVITS-F1 (needs `pip install coqui-tts` + model files from HF)
 - `baseline_samples/` — baseline TTS outputs for comparison (see §3)
+- `docs/F5_TTS_Sinhala_Methodology.md` — preregistered adaptation of the F5-TTS paper for a feasible Sinhala ablation
+- `experiments/f5_sinhala_ablation.json` — fixed Sway Sampling/NFE/text-normalization conditions and seeds
+- `scripts/prepare_f5_runs.py` — validates an evaluation manifest and creates the deterministic run sheet
+- `scripts/score_transcripts.py` — dependency-free Sinhala CER/WER scoring after ASR transcription
 
 ## 7. Remaining to-do
 

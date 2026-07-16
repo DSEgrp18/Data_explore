@@ -1,0 +1,22 @@
+{
+  "name": "f5_sinhala_sway_ablation_v1",
+  "description": "Paired Sinhala F5-TTS inference ablation adapted from Chen et al. (2024).",
+  "fixed": {
+    "checkpoint": "same Sinhala F5-TTS checkpoint for every condition",
+    "prompt_audio": "same 4-10 second prompt for every condition within an item",
+    "prompt_transcript": "manually verified",
+    "seeds": [11, 22, 33],
+    "cfg_strength": 2.0,
+    "ode_solver": "euler"
+  },
+  "conditions": [
+    {"id": "uniform_16", "nfe": 16, "sway_coefficient": 0.0, "normalize": true},
+    {"id": "sway_16", "nfe": 16, "sway_coefficient": -1.0, "normalize": true},
+    {"id": "uniform_32", "nfe": 32, "sway_coefficient": 0.0, "normalize": true},
+    {"id": "sway_32", "nfe": 32, "sway_coefficient": -1.0, "normalize": true},
+    {"id": "sway_16_raw_text", "nfe": 16, "sway_coefficient": -1.0, "normalize": false}
+  ],
+  "primary_metrics": ["cer", "rtf", "native_speaker_mos"],
+  "secondary_metrics": ["wer", "speaker_similarity"],
+  "minimum_test_items": 100
+}

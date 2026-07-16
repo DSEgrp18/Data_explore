@@ -1,0 +1,5 @@
+id,category,text,prompt_audio,prompt_text
+si_001,plain,ශ්‍රී ලංකාව ඉන්දියානු සාගරයේ පිහිටි දූපතකි.,prompts/speaker_01.wav,ආයුබෝවන් ඔබට කොහොමද
+si_002,numeral,මට රුපියල් 250ක් ගෙවන්න තියෙනවා.,prompts/speaker_01.wav,ආයුබෝවන් ඔබට කොහොමද
+si_003,date,රැස්වීම 2026 ජූලි 16 දින පැවැත්වේ.,prompts/speaker_01.wav,ආයුබෝවන් ඔබට කොහොමද
+si_004,code_switch,අද machine learning පන්තිය ආරම්භ වේ.,prompts/speaker_01.wav,ආයුබෝවන් ඔබට කොහොමද
