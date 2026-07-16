@@ -67,6 +67,7 @@ This repo tracks every data source we find, with license and suitability notes, 
 - `scripts/score_transcripts.py` — dependency-free Sinhala CER/WER scoring after ASR transcription
 - `scripts/sifi_frontend.py` — Unicode grapheme-cluster and Sinhala phonological-feature extraction for SiFi-TTS
 - `scripts/run_vits_baseline.py` — reproducible Dialog/UoM VITS challenge-set runner with latency and RTF measurements
+- `dashboard/` — local browser UI for pasted Sinhala text, number expansion, safe long-text chunking, and WAV playback
 
 ## 7. Remaining to-do
 
