@@ -88,7 +88,10 @@ class TTSEngine:
     def __init__(self, model_dir: Path, checkpoint_name: str, config_name: str):
         from TTS.utils.synthesizer import Synthesizer
 
-        sys.path.insert(0, str(model_dir))
+        romanizer_dir = model_dir
+        if not (romanizer_dir / "romanizer.py").exists():
+            romanizer_dir = Path(os.environ.get("SINHALA_TTS_ROMANIZER_DIR", DEFAULT_MALE_MODEL_DIR))
+        sys.path.insert(0, str(romanizer_dir))
         from romanizer import sinhala_to_roman
 
         self.romanize = sinhala_to_roman
@@ -151,7 +154,8 @@ def create_app(model_dir: Path | None = None, male_model_dir: Path | None = None
         },
         "male": {
             "model_dir": male_model_dir or Path(os.environ.get("SINHALA_TTS_MALE_MODEL_DIR", DEFAULT_MALE_MODEL_DIR)),
-            "checkpoint": "Roshan_270000.pth", "config": "Roshan_config.json",
+            "checkpoint": os.environ.get("SINHALA_TTS_MALE_CHECKPOINT", "Roshan_270000.pth"),
+            "config": os.environ.get("SINHALA_TTS_MALE_CONFIG", "Roshan_config.json"),
         },
     }
     engines: dict[str, TTSEngine] = {}
