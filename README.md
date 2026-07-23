@@ -63,12 +63,69 @@ This repo tracks every data source we find, with license and suitability notes, 
 - `docs/Proposed_SiFi_TTS_Architecture.md` — literature-grounded, resource-aware architecture proposed after reviewing Sinhala and general TTS methods
 - `docs/Baseline_Test_2026-07-17.md` — reproducible 10-item VITS baseline run, latency measurements, and confirmed digit failure
 - `docs/Conversational_Data_Strategy.md` — licensed/consented conversational speech collection and filtering plan
+- `docs/Naturalness_Improvement_Plan.md` — evaluation of podcast/subtitle data and the staged conversational/emotional naturalness recipe
 - `experiments/f5_sinhala_ablation.json` — fixed Sway Sampling/NFE/text-normalization conditions and seeds
 - `scripts/prepare_f5_runs.py` — validates an evaluation manifest and creates the deterministic run sheet
 - `scripts/score_transcripts.py` — dependency-free Sinhala CER/WER scoring after ASR transcription
 - `scripts/sifi_frontend.py` — Unicode grapheme-cluster and Sinhala phonological-feature extraction for SiFi-TTS
 - `scripts/run_vits_baseline.py` — reproducible Dialog/UoM VITS challenge-set runner with latency and RTF measurements
+- `scripts/prepare_conversational_data.py` — rights/transcript/provenance/quality gate for authorized conversational TTS segments
+- `scripts/prepare_target_speaker_vits_dataset.py` — validates Roshan/Nipunika recording packs and writes safe Coqui VITS manifests
+- `scripts/derive_prosody_styles.py` — derives acoustic style controls from pitch, energy, speaking rate, and silence
+- `scripts/train_vits_natural_style_gpu.py` — trains a new multi-style Sinhala VITS model from scratch
+- `scripts/prepare_f5_sinhala_dataset.py` — builds Sinhala-Unicode F5 manifests and a custom character vocabulary
+- `scripts/train_f5_sinhala_gpu.py` — GPU fine-tuning launcher for a matching Sinhala F5 checkpoint
+- `scripts/download_sinhala_f5_checkpoint.py` — authenticated downloader for the gated Sinhala F5 weights/vocabulary
+- `notebooks/train_sinhala_f5_kaggle.ipynb` — self-contained Kaggle GPU training, checkpoint download, fine-tuning, and sample generation
+- `scripts/prepare_podcast_vits_dataset.py` — converts the authorized Sinhala caption pilot to the Dialog VITS romanized manifest
+- `scripts/train_vits_conversational_gpu.py` — low-learning-rate GPU adaptation of the existing VITS checkpoint
+- `scripts/run_vits_checkpoint_gpu.py` — CUDA challenge-set runner for a trained Coqui VITS checkpoint, with number normalization and duration control
+- `scripts/sinhala_text_normalizer.py` — dependency-free number and text normalization used by data preparation and GPU inference
 - `dashboard/` — local browser UI for pasted Sinhala text, number expansion, safe long-text chunking, and WAV playback
+
+### A/B test the conversational checkpoint
+
+`best_model_8555.pth` is the validation-best conversational adaptation candidate. It is retained for A/B testing, but the original Roshan checkpoint remains the safer production/default voice until clarity is restored.
+
+```bash
+/home/kusal/sportfit/.venv/bin/python scripts/run_vits_checkpoint_gpu.py \
+  --manifest evaluation/baseline_challenge.csv \
+  --checkpoint runs/vits_conversational_full/vits_conversational_gpu-July-22-2026_02+58PM-20381d0/best_model_8555.pth \
+  --config runs/vits_conversational_full/vits_conversational_gpu-July-22-2026_02+58PM-20381d0/config.json \
+  --romanizer ../tts_demo/model_male/romanizer.py \
+  --output-dir runs/vits_conversational_full/eval_best_8555
+```
+
+### F5-TTS Sinhala route
+
+The F5 route uses the original Sinhala captions, not the VITS romanizer. The
+data and official Arrow cache are prepared with:
+
+```bash
+python3 scripts/prepare_f5_sinhala_dataset.py \
+  --source-root data/podcast_cc_v1_ten/cc_v1_tenvideo_baseline \
+  --output-root runs/f5_sinhala_data
+```
+
+Fine-tuning requires an authorized, architecture-matching Sinhala F5
+checkpoint (the public Sinhala checkpoint is manually gated):
+
+```bash
+export HF_TOKEN='your_huggingface_token'
+/home/kusal/sportfit/.venv/bin/python scripts/download_sinhala_f5_checkpoint.py
+/home/kusal/sportfit/.venv/bin/python scripts/train_f5_sinhala_gpu.py \
+  --pretrained runs/f5_sinhala_checkpoint/model_230000_reduced.pt \
+  --vocab-path runs/f5_sinhala_checkpoint/vocab.txt
+```
+
+For interactive testing, point the dashboard at that run and open `http://127.0.0.1:7861`:
+
+```bash
+SINHALA_TTS_MALE_MODEL_DIR="$PWD/runs/vits_conversational_full/vits_conversational_gpu-July-22-2026_02+58PM-20381d0" \
+SINHALA_TTS_MALE_CHECKPOINT=best_model_8555.pth \
+SINHALA_TTS_MALE_CONFIG=config.json \
+PORT=7861 ../tts_demo/venv/bin/python dashboard/app.py
+```
 
 ## 7. Remaining to-do
 
@@ -80,3 +137,6 @@ This repo tracks every data source we find, with license and suitability notes, 
 - [ ] Try pnfo's own VITS checkpoint as second baseline
 - [ ] Download SafnasKaldeen from Kaggle, measure stats (needs Kaggle login)
 - [ ] Listen to the baseline samples (all members) and note quality issues for the proposal defence
+- [ ] Collect a rights-cleared 1–2 hour target-speaker conversational smoke-test set
+- [ ] Run `scripts/prepare_conversational_data.py` and manually audit accepted clips
+- [ ] Compare clean-only, conversational-adapted, and reference-style-conditioned systems with a blinded native-speaker study
