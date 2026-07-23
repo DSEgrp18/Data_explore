@@ -1,0 +1,4 @@
+utterance_id,source_id,episode_id,speaker_id,audio_path,start_sec,end_sec,text,style,transcript_status,license_id
+creator01_ep01_0001,creator01,ep01,host01,audio/creator01_ep01.wav,12.40,16.85,"අද අපි මේ ගැන සරලව කතා කරමු.",conversational,manual_verified,creator01_permission_v1
+creator01_ep01_0002,creator01,ep01,host01,audio/creator01_ep01.wav,18.10,21.40,"ඔබට මේ අදහස ගැන මොකද හිතෙන්නේ?",question,manual_verified,creator01_permission_v1
+creator01_ep01_0003,creator01,ep01,host01,audio/creator01_ep01.wav,25.00,29.15,"ඒ සිදුවීම ගැන මට ඇත්තටම කනගාටුයි.",sad,manual_verified,creator01_permission_v1

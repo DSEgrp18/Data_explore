@@ -1,0 +1,29 @@
+id,style,text
+neutral_001,neutral,අද උදේ ඉඳන්ම මට හොඳට වැඩ කරන්න පුළුවන් වුණා.
+neutral_002,neutral,ශ්‍රී ලංකාවේ කාලගුණය ප්‍රදේශයෙන් ප්‍රදේශයට වෙනස් වෙනවා.
+neutral_003,neutral,හෙට උදේ නවයට අපි හමුවෙමු.
+neutral_004,neutral,මේ වාර්තාව මම අද සවසට සූදානම් කරන්නම්.
+neutral_005,neutral,ඔයාට අවශ්‍ය තොරතුරු මෙතනින් හොයාගන්න පුළුවන්.
+conversational_001,conversational,ඇත්තටම මට ඒ ගැන කලින් හිතලා තිබුණේ නැහැ.
+conversational_002,conversational,හරි, එහෙනම් අපි ඒ විදිහට කරමු.
+conversational_003,conversational,මට නම් හිතෙන්නේ මේක තව ටිකක් සරල කරන්න ඕනෑ.
+conversational_004,conversational,ඔයා කියන කතාව මට හොඳට තේරෙනවා.
+conversational_005,conversational,අනේ සමාවෙන්න, මට ඒක මඟ හැරුණා.
+question_001,question,ඔයා අද හවස අපිත් එක්ක එනවද?
+question_002,question,මේ වැඩසටහන පටන් ගන්නේ කීයටද?
+question_003,question,ඔබට මේ ගැන තවත් විස්තර අවශ්‍යද?
+question_004,question,ඇයි ඔයා මේ තරම් ඉක්මනට ගියේ?
+question_005,question,අපිට මේ ප්‍රශ්නය එකට විසඳගන්න පුළුවන්ද?
+empathetic_001,empathetic,ඔයාට මේ වෙලාවේ අමාරුයි කියලා මට තේරෙනවා.
+empathetic_002,empathetic,කලබල වෙන්න එපා, අපි මේක හෙමින් විසඳගමු.
+empathetic_003,empathetic,ඔයා තනිවෙලා නැහැ, මම මෙතන ඉන්නවා.
+empathetic_004,empathetic,ඒ ගැන කනගාටුයි, ඔයාට අවශ්‍ය උදව් මම කරන්නම්.
+happy_001,happy,අද අපිට හොඳ ආරංචියක් ලැබුණා.
+happy_002,happy,මේ ප්‍රතිඵලය ගැන මට ඇත්තටම සතුටුයි!
+sad_001,sad,ඒ දවස මතක් වෙනකොට මගේ හිතට දුකක් දැනෙනවා.
+sad_002,sad,අපි බලාපොරොත්තු වුණ දේ ඒ විදිහට සිදු වුණේ නැහැ.
+phonology_001,phonology,ර රැ රි රී රු රූ රෙ රේ රො රෝ.
+phonology_002,phonology,රටේ රසවත් රතු රඹුටන් තිබුණා.
+numbers_001,numbers,මට රුපියල් දෙසිය පනහක් ගෙවන්න තියෙනවා.
+numbers_002,numbers,රැස්වීම දෙදහස් විසිහය ජූලි දහසය දින පැවැත්වේ.
+code_switch_001,code_switch,අද machine learning පන්තිය ආරම්භ වෙනවා.

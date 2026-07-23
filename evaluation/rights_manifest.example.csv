@@ -1,0 +1,2 @@
+license_id,source_id,permission_to_train,permission_to_release_model,permission_to_release_audio,consent_scope
+creator01_permission_v1,creator01,yes,yes,no,"creator supplied audio; host voice; ML training; adapter/checkpoint publication; demo synthesis"
